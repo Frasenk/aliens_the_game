@@ -20,10 +20,7 @@ def run_game():
     while True:
         gf.check_events(ai_settings, screen, ship, bullets)
         ship.update()
-        bullets.update()
-        for bullet in bullets.copy():       #create copy of bullet
-            if bullet.rect.bottom <= 0:     #check if bullet touched bottom
-                bullets.remove(bullet)
+        gf.update_bullets(bullets)
 
         gf.update_screen(ai_settings, screen, ship, bullets)
 
