@@ -1,5 +1,6 @@
 import pygame
 
+
 class Ship():
 
     def __init__(self, ai_settings, screen):
@@ -26,6 +27,7 @@ class Ship():
             self.center -= self.ai_settings.ship_speed_factor
 
         self.rect.centerx = self.center
+
 
     def blitme(self):
         """Show ship in actual posiition"""
