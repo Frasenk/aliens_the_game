@@ -7,6 +7,7 @@ class Settings():
         self.screen_height = 800
         self.bg_color = (230, 230, 230)
         self.ship_speed_factor = 1.5
+        self.alien_speed_factor = 1
 
         #  Bullet settings:
 
