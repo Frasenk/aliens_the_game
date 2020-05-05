@@ -85,14 +85,19 @@ def check_events(ai_settings, screen, ship, bullets):
             check_keyup_events(event, ship)
 
 
-def update_bullets(aliens, bullets):
+def update_bullets(ai_settings, screen, ship, aliens, bullets):
     bullets.update()
     for bullet in bullets.copy():  # create copy of bullet
         if bullet.rect.bottom <= 0:  # check if bullet touched bottom
             bullets.remove(bullet)
+    check_bullet_alien_collisions(ai_settings, screen, ship, aliens, bullets)
 
-    collisions = pygame.sprite.groupcollide(bullets, aliens, True, True)
 
+def check_bullet_alien_collisions(ai_settings, screen, ship, aliens, bullets):
+    pygame.sprite.groupcollide(bullets, aliens, True, True)
+    if len(aliens) == 0:
+        bullets.empty()
+        create_fleet(ai_settings, screen, ship, aliens)
 
 def update_aliens(ai_settings, aliens):
     check_fleet_edges(ai_settings, aliens)
