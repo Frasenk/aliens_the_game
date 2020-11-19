@@ -68,11 +68,14 @@ def fire_bullet(ai_settings, screen, ship, bullets):
 
 
 def ship_hit(ai_settings, stats, screen, ship, aliens, bullets):
-    stats.ship_left -= 1
-    aliens.empty()
-    bullets.empty()
-    create_fleet(ai_settings, screen, ship, aliens)
-    sleep(0.5)
+    if stats.ship_left >0:
+        stats.ship_left -= 1
+        aliens.empty()
+        bullets.empty()
+        create_fleet(ai_settings, screen, ship, aliens)
+        sleep(0.5)
+    else:
+        stats.game_active = False
 
 
 def check_keyup_events(event, ship):
@@ -92,6 +95,14 @@ def check_events(ai_settings, screen, ship, bullets):
 
         elif event.type == pygame.KEYUP:  # check if key is up
             check_keyup_events(event, ship)
+
+
+def check_aliens_bottom(ai_settings, stats, screen, ship, aliens, bullets):
+    screen_rect = screen.get_rect()
+    for alien in aliens.sprites():
+        if alien.rect.bottom >= screen_rect.bottom:
+            ship_hit(ai_settings, stats, screen, ship, aliens, bullets)
+            break
 
 
 def update_bullets(ai_settings, screen, ship, aliens, bullets):
@@ -115,6 +126,7 @@ def update_aliens(ai_settings, stats, screen, ship, aliens, bullets):
     if pygame.sprite.spritecollideany(ship, aliens):
         ship_hit(ai_settings, stats, screen, ship, aliens, bullets)
         print("Ship has been destroyed")
+    check_aliens_bottom(ai_settings, stats, screen, ship, aliens, bullets)
 
 
 def update_screen(ai_settings, screen, ship, aliens, bullets):
