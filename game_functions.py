@@ -1,6 +1,7 @@
 import sys
 import pygame
 
+from time import sleep
 from bullet import Bullet
 from alien import Alien
 
@@ -66,6 +67,14 @@ def fire_bullet(ai_settings, screen, ship, bullets):
         bullets.add(new_bullet)
 
 
+def ship_hit(ai_settings, stats, screen, ship, aliens, bullets):
+    stats.ship_left -= 1
+    aliens.empty()
+    bullets.empty()
+    create_fleet(ai_settings, screen, ship, aliens)
+    sleep(0.5)
+
+
 def check_keyup_events(event, ship):
     if event.key == pygame.K_RIGHT:
         ship.moving_right = False
@@ -99,9 +108,14 @@ def check_bullet_alien_collisions(ai_settings, screen, ship, aliens, bullets):
         bullets.empty()
         create_fleet(ai_settings, screen, ship, aliens)
 
-def update_aliens(ai_settings, aliens):
+
+def update_aliens(ai_settings, stats, screen, ship, aliens, bullets):
     check_fleet_edges(ai_settings, aliens)
     aliens.update()
+    if pygame.sprite.spritecollideany(ship, aliens):
+        ship_hit(ai_settings, stats, screen, ship, aliens, bullets)
+        print("Ship has been destroyed")
+
 
 def update_screen(ai_settings, screen, ship, aliens, bullets):
     screen.fill(ai_settings.bg_color)
